@@ -83,7 +83,11 @@ function MovieCard({ movie, setSelectedMovie }) {
     <div className="card">
       <img
         className="card-img"
-        src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2${movie?.poster_path}`}
+        src={
+          movie.poster_path
+            ? `https://image.tmdb.org/t/p/w300_and_h450_bestv2${movie?.poster_path}`
+            : "https://m.media-amazon.com/images/I/71K9jxwdFeL._AC_UF894,1000_QL80_.jpg"
+        }
         alt={movie.original_title}
       />
       <div className="card-body">
