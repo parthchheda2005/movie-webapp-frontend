@@ -1,24 +1,30 @@
 import React from "react";
 import { useState } from "react";
 
-export default function Navbar({ onHandleQuery }) {
+export default function Navbar({ onHandleQuery, setSelectedMovie }) {
   const [tempQuery, setTempQuery] = useState("");
   return (
     <div className="nav-bar">
-      <Logo onHandleQuery={onHandleQuery} setTempQuery={setTempQuery} />
+      <Logo
+        onHandleQuery={onHandleQuery}
+        setTempQuery={setTempQuery}
+        setSelectedMovie={setSelectedMovie}
+      />
       <SearchBar
         onHandleQuery={onHandleQuery}
         tempQuery={tempQuery}
         setTempQuery={setTempQuery}
+        setSelectedMovie={setSelectedMovie}
       />
     </div>
   );
 }
 
-function Logo({ onHandleQuery, setTempQuery }) {
+function Logo({ onHandleQuery, setTempQuery, setSelectedMovie }) {
   function handleClick() {
     onHandleQuery("");
     setTempQuery("");
+    setSelectedMovie(false);
   }
 
   return (
@@ -28,9 +34,15 @@ function Logo({ onHandleQuery, setTempQuery }) {
   );
 }
 
-function SearchBar({ onHandleQuery, tempQuery, setTempQuery }) {
+function SearchBar({
+  onHandleQuery,
+  tempQuery,
+  setTempQuery,
+  setSelectedMovie,
+}) {
   function handleSubmit(e) {
     e.preventDefault();
+    setSelectedMovie(false);
     onHandleQuery(tempQuery);
   }
 

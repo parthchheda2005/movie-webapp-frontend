@@ -177,11 +177,18 @@ body {
   margin: 5%;
 }
 
+.content {
+  padding: 50px;
+}
+
 .go-back-button {
   cursor: pointer;
   transition: transform 0.2s;
   size: 25px;
-  margin: 40px;
+  background-color: #7950f2;
+  border: none;
+  border-radius: 50%;
+  float: left;
 }
 
 .go-back-button:hover {
@@ -193,7 +200,7 @@ body {
 }
 
 .icon {
-  stroke: #60a5fa; /* This is equivalent to stroke-blue-300 in Tailwind CSS */
+  stroke: #343a40; /* This is equivalent to stroke-blue-300 in Tailwind CSS */
 }
 
 .movie-details {
@@ -209,6 +216,26 @@ body {
   width: 33%;
   height: auto;
   border-radius: 10%;
+}
+
+.movie-content {
+  width: 400px;
+}
+
+.movie-content h1 {
+  font-size: 40px;
+  font-weight: 850;
+}
+
+.movie-content h2 {
+  font-size: 25px;
+  font-weight: 300;
+}
+
+.movie-content p {
+  margin-top: 5%;
+  font-size: 18px;
+  font-weight: 300;
 }
 
 /*

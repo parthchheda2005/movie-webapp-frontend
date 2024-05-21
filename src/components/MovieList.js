@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export default function MovieList({ query }) {
+export default function MovieList({ query, setSelectedMovie, selectedMovie }) {
   const [movieList, setMovieList] = useState([]);
 
   useEffect(() => {
@@ -66,7 +66,11 @@ export default function MovieList({ query }) {
       <ul>
         {movieList?.map((movie) => (
           <li key={movie.id}>
-            <MovieCard movie={movie} key={movie.id} />
+            <MovieCard
+              movie={movie}
+              key={movie.id}
+              setSelectedMovie={setSelectedMovie}
+            />
           </li>
         ))}
       </ul>
@@ -74,7 +78,7 @@ export default function MovieList({ query }) {
   );
 }
 
-function MovieCard({ movie }) {
+function MovieCard({ movie, setSelectedMovie }) {
   return (
     <div className="card">
       <img
@@ -96,7 +100,9 @@ function MovieCard({ movie }) {
         </h1>
         <p className="card-subtitle">{movie?.release_date}</p>
         <p className="card-info">{movie?.overview}</p>
-        <button className="card-btn">See Details</button>
+        <button className="card-btn" onClick={() => setSelectedMovie(movie.id)}>
+          See Details
+        </button>
       </div>
     </div>
   );
