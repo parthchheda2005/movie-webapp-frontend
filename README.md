@@ -1,2 +1,3 @@
 # movie-list
-made a movie list using the TMDB api
+
+made a movie list kind of like imdb using the TMDB api
