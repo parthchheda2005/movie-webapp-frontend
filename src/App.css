@@ -41,7 +41,7 @@ body {
   background-color: var(--color-primary);
   z-index: 7;
   position: fixed;
-  width: 98%;
+  width: 96.5%;
   border-radius: 0.9rem;
   margin-top: -24px;
 }
@@ -180,6 +180,8 @@ body {
 .go-back-button {
   cursor: pointer;
   transition: transform 0.2s;
+  size: 25px;
+  margin: 40px;
 }
 
 .go-back-button:hover {
@@ -192,6 +194,21 @@ body {
 
 .icon {
   stroke: #60a5fa; /* This is equivalent to stroke-blue-300 in Tailwind CSS */
+}
+
+.movie-details {
+  display: flex;
+  justify-content: center;
+}
+
+.movie-content {
+  margin-left: 5%;
+}
+
+.movie-img {
+  width: 33%;
+  height: auto;
+  border-radius: 10%;
 }
 
 /*

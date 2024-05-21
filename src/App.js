@@ -15,7 +15,9 @@ export default function App() {
   return (
     <div>
       <Navbar onHandleQuery={handleQuery} />
-      <MovieList query={query} />
+      {/*
+      <MovieList query={query} /> */}
+      <MovieDetails />
     </div>
   );
 }
