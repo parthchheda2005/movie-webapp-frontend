@@ -1,6 +1,7 @@
 import "./App.css";
 import MovieList from "./components/MovieList.js";
 import Navbar from "./components/Navbar.js";
+import MovieDetails from "./components/MovieDetails.js";
 import { useState } from "react";
 
 export default function App() {
