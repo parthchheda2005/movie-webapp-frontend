@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-export default function MovieList({ query, setSelectedMovie, selectedMovie }) {
-  const [movieList, setMovieList] = useState([]);
+export default function MovieList({
+  query,
+  setSelectedMovie,
+  ratedMovies,
+  showRatedMovies,
+}) {
+  const [movieList, setMovieList] = useState(ratedMovies);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -56,10 +61,14 @@ export default function MovieList({ query, setSelectedMovie, selectedMovie }) {
       }
     }
 
-    getMovies();
+    if (!showRatedMovies) {
+      getMovies();
+    } else {
+      setMovieList(ratedMovies);
+    }
 
     return () => controller.abort();
-  }, [query]);
+  }, [query, showRatedMovies, ratedMovies]);
 
   return (
     <div className="movie-list">
@@ -67,9 +76,10 @@ export default function MovieList({ query, setSelectedMovie, selectedMovie }) {
         {movieList?.map((movie) => (
           <li key={movie.id}>
             <MovieCard
-              movie={movie}
+              id={movie.id}
               key={movie.id}
               setSelectedMovie={setSelectedMovie}
+              ratedMovies={ratedMovies}
             />
           </li>
         ))}
@@ -78,7 +88,37 @@ export default function MovieList({ query, setSelectedMovie, selectedMovie }) {
   );
 }
 
-function MovieCard({ movie, setSelectedMovie }) {
+function MovieCard({ id, setSelectedMovie, ratedMovies }) {
+  const [movie, setMovie] = useState({});
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    function getMovieInfo() {
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkYjI2Mjc4NTExMzM1YTE3Yjg4NzQxZjRlNTljYjU1NSIsInN1YiI6IjY2NGFmNDU2ZWZjYjI3NjdiMDc5OGVjNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.wWYIEvar8k8uqdwOxi-okzzE8brzwjUrBApdCptvLMw",
+        },
+      };
+
+      fetch(
+        `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
+        options,
+        { signal: controller.signal }
+      )
+        .then((response) => response.json())
+        .then((response) => setMovie(response))
+        .catch((err) => console.error(err));
+    }
+
+    getMovieInfo();
+
+    return () => controller.abort();
+  }, [id]);
+
   return (
     <div className="card">
       <img
@@ -104,9 +144,18 @@ function MovieCard({ movie, setSelectedMovie }) {
         </h1>
         <p className="card-subtitle">{movie?.release_date}</p>
         <p className="card-info">{movie?.overview}</p>
-        <button className="card-btn" onClick={() => setSelectedMovie(movie.id)}>
+        <button className="card-btn" onClick={() => setSelectedMovie(id)}>
           See Details
         </button>
+        {ratedMovies.find((curr) => curr.id === id) && (
+          <p className="card-info">
+            {" "}
+            You rated this {
+              ratedMovies.find((curr) => curr.id === id).rating
+            }{" "}
+            ⭐️
+          </p>
+        )}
       </div>
     </div>
   );

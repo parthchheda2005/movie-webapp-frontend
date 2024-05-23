@@ -1,7 +1,11 @@
 import React from "react";
 import { useState } from "react";
 
-export default function Navbar({ onHandleQuery, setSelectedMovie }) {
+export default function Navbar({
+  onHandleQuery,
+  setSelectedMovie,
+  setShowRatedMovies,
+}) {
   const [tempQuery, setTempQuery] = useState("");
   return (
     <div className="nav-bar">
@@ -9,6 +13,7 @@ export default function Navbar({ onHandleQuery, setSelectedMovie }) {
         onHandleQuery={onHandleQuery}
         setTempQuery={setTempQuery}
         setSelectedMovie={setSelectedMovie}
+        setShowRatedMovies={setShowRatedMovies}
       />
       <SearchBar
         onHandleQuery={onHandleQuery}
@@ -16,15 +21,28 @@ export default function Navbar({ onHandleQuery, setSelectedMovie }) {
         setTempQuery={setTempQuery}
         setSelectedMovie={setSelectedMovie}
       />
+      <button
+        className="rated-movies-btn"
+        onClick={() => setShowRatedMovies((curr) => !curr)}
+      >
+        {" "}
+        My Rated Movies{" "}
+      </button>
     </div>
   );
 }
 
-function Logo({ onHandleQuery, setTempQuery, setSelectedMovie }) {
+function Logo({
+  onHandleQuery,
+  setTempQuery,
+  setSelectedMovie,
+  setShowRatedMovies,
+}) {
   function handleClick() {
     onHandleQuery("");
     setTempQuery("");
     setSelectedMovie(false);
+    setShowRatedMovies(false);
   }
 
   return (

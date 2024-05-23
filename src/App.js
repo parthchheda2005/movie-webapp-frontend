@@ -8,6 +8,7 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [selectedMovie, setSelectedMovie] = useState(false);
   const [ratedMovies, setRatedMovies] = useState([]);
+  const [showRatedMovies, setShowRatedMovies] = useState(false);
 
   function handleQuery(q) {
     ratedMovies.map((i) => console.log(i));
@@ -16,7 +17,11 @@ export default function App() {
 
   return (
     <div>
-      <Navbar onHandleQuery={handleQuery} setSelectedMovie={setSelectedMovie} />
+      <Navbar
+        onHandleQuery={handleQuery}
+        setSelectedMovie={setSelectedMovie}
+        setShowRatedMovies={setShowRatedMovies}
+      />
       {selectedMovie ? (
         <MovieDetails
           selectedMovie={selectedMovie}
@@ -25,7 +30,12 @@ export default function App() {
           ratedMovies={ratedMovies}
         />
       ) : (
-        <MovieList query={query} setSelectedMovie={setSelectedMovie} />
+        <MovieList
+          query={query}
+          setSelectedMovie={setSelectedMovie}
+          showRatedMovies={showRatedMovies}
+          ratedMovies={ratedMovies}
+        />
       )}
     </div>
   );

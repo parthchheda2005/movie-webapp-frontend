@@ -282,3 +282,28 @@ body {
   transform: translateY(10px);
   transition: 100ms;
 }
+
+.rated-movies-btn {
+  padding: 12.5px 30px;
+  border: 0;
+  border-radius: 100px;
+  background-color: rgb(93 24 220);
+  color: #ffffff;
+  font-weight: Bold;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+.rated-movies-btn:hover {
+  background-color: rgb(93 24 220);
+  box-shadow: 0 0 20px #6fc5ff50;
+  transform: scale(1.1);
+}
+
+.rated-movies-btn:active {
+  background-color: rgb(93 24 220);
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
+}
