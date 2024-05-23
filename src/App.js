@@ -7,9 +7,10 @@ import { useState } from "react";
 export default function App() {
   const [query, setQuery] = useState("");
   const [selectedMovie, setSelectedMovie] = useState(false);
+  const [ratedMovies, setRatedMovies] = useState([]);
 
   function handleQuery(q) {
-    console.log(q);
+    ratedMovies.map((i) => console.log(i));
     setQuery(q);
   }
 
@@ -20,6 +21,8 @@ export default function App() {
         <MovieDetails
           selectedMovie={selectedMovie}
           setSelectedMovie={setSelectedMovie}
+          setRatedMovies={setRatedMovies}
+          ratedMovies={ratedMovies}
         />
       ) : (
         <MovieList query={query} setSelectedMovie={setSelectedMovie} />

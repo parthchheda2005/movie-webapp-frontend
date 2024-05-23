@@ -1,8 +1,16 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import StarRating from "./StarRating.js";
 
-export default function MovieDetails({ setSelectedMovie, selectedMovie }) {
+export default function MovieDetails({
+  setSelectedMovie,
+  selectedMovie,
+  setRatedMovies,
+  ratedMovies,
+}) {
   const [movie, setMovie] = useState({});
+  const [rating, setRating] = useState(0);
+  let movieToBeAdded = { id: selectedMovie, rating: rating };
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -29,13 +37,20 @@ export default function MovieDetails({ setSelectedMovie, selectedMovie }) {
     getMovieInfo();
 
     return () => controller.abort();
-  });
+  }, [selectedMovie]);
+
   return (
     <div>
       <Content
         movie={movie}
         setSelectedMovie={setSelectedMovie}
         selectedMovie={selectedMovie}
+      />
+      <RatingSystem
+        setRating={setRating}
+        setRatedMovies={setRatedMovies}
+        movieToBeAdded={movieToBeAdded}
+        ratedMovies={ratedMovies}
       />
     </div>
   );
@@ -72,7 +87,7 @@ function Content({ movie, setSelectedMovie, selectedMovie }) {
     getAvailability();
 
     return () => controller.abort();
-  });
+  }, [selectedMovie]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -100,7 +115,7 @@ function Content({ movie, setSelectedMovie, selectedMovie }) {
     getDirector();
 
     return () => controller.abort();
-  });
+  }, [selectedMovie]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -128,7 +143,7 @@ function Content({ movie, setSelectedMovie, selectedMovie }) {
     getActors();
 
     return () => controller.abort();
-  });
+  }, [selectedMovie]);
 
   return (
     <div className="content">
@@ -142,16 +157,15 @@ function Content({ movie, setSelectedMovie, selectedMovie }) {
               : "https://m.media-amazon.com/images/I/71K9jxwdFeL._AC_UF894,1000_QL80_.jpg"
           }
           alt={movie.original_title}
-          onClick={() => console.log(director)}
         />
         <div className="movie-content">
           <h1>{movie?.title}</h1>
           <h2>
             {movieGenres?.map((genre, acc) =>
               acc === movieGenres.length - 1 ? (
-                <span>{genre}</span>
+                <span key={acc}>{genre}</span>
               ) : (
-                <span>{genre}, </span>
+                <span key={acc}>{genre}, </span>
               )
             )}
           </h2>
@@ -180,9 +194,9 @@ function Content({ movie, setSelectedMovie, selectedMovie }) {
                   <span>
                     {availablity?.map((platform, acc) =>
                       acc === availablity.length - 1 ? (
-                        <span>{platform.provider_name}</span>
+                        <span key={acc}>{platform.provider_name}</span>
                       ) : (
-                        <span>{platform.provider_name}, </span>
+                        <span key={acc}>{platform.provider_name}, </span>
                       )
                     )}
                   </span>
@@ -199,17 +213,71 @@ function Content({ movie, setSelectedMovie, selectedMovie }) {
                 Starring:{" "}
                 {actors?.map((a, acc) =>
                   acc === actors.length - 1 ? (
-                    <span>{a.name}</span>
+                    <span key={acc}>{a.name}</span>
                   ) : (
-                    <span>{a.name}, </span>
+                    <span key={acc}>{a.name}, </span>
                   )
                 )}
               </p>
             </li>
           </ul>
-          <p>{movie?.overview}</p>
+          <p>{movie.overview}</p>
         </div>
       </div>
+    </div>
+  );
+}
+
+function RatingSystem({
+  setRating,
+  movieToBeAdded,
+  setRatedMovies,
+  ratedMovies,
+}) {
+  function handleRatedMovies() {
+    if (
+      ratedMovies.filter((curr) => curr.id === movieToBeAdded.id).length !== 0
+    ) {
+      setRatedMovies((ratedMovies) =>
+        ratedMovies.map((curr) => helperHandleRatedMovies(curr))
+      );
+    } else {
+      setRatedMovies((curr) => [...curr, movieToBeAdded]);
+    }
+  }
+
+  function helperHandleRatedMovies(curr) {
+    if (curr.id === movieToBeAdded.id) {
+      return { ...curr, rating: movieToBeAdded.rating };
+    }
+    return curr;
+  }
+
+  return (
+    <div className="rating-system">
+      <h1>
+        {ratedMovies.find((curr) => curr?.id === movieToBeAdded.id) ? (
+          <span>
+            You have previously rated this{" "}
+            {ratedMovies.find((curr) => curr?.id === movieToBeAdded.id)?.rating}
+            🌟
+          </span>
+        ) : (
+          "You have not rated this movie yet."
+        )}
+      </h1>
+      <span>
+        <StarRating
+          className="star-rating"
+          maxRating={10}
+          color="rgb(141, 10, 248)"
+          defualtRating={0}
+          onSetRating={setRating}
+        />
+      </span>
+      <button className="rating-button" onClick={() => handleRatedMovies()}>
+        Rate the movie!
+      </button>
     </div>
   );
 }
