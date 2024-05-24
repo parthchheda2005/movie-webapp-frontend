@@ -5,6 +5,7 @@ export default function MovieList({
   setSelectedMovie,
   ratedMovies,
   showRatedMovies,
+  setRatedMovies,
 }) {
   const [movieList, setMovieList] = useState(ratedMovies);
 
@@ -80,6 +81,7 @@ export default function MovieList({
               key={movie.id}
               setSelectedMovie={setSelectedMovie}
               ratedMovies={ratedMovies}
+              setRatedMovies={setRatedMovies}
             />
           </li>
         ))}
@@ -88,7 +90,7 @@ export default function MovieList({
   );
 }
 
-function MovieCard({ id, setSelectedMovie, ratedMovies }) {
+function MovieCard({ id, setSelectedMovie, ratedMovies, setRatedMovies }) {
   const [movie, setMovie] = useState({});
 
   useEffect(() => {
@@ -155,6 +157,18 @@ function MovieCard({ id, setSelectedMovie, ratedMovies }) {
             }{" "}
             ⭐️
           </p>
+        )}
+        {ratedMovies.find((curr) => curr.id === id) && (
+          <button
+            className="card-btn"
+            onClick={() =>
+              setRatedMovies((currList) =>
+                currList.filter((curr) => curr.id !== id)
+              )
+            }
+          >
+            Remove Rating
+          </button>
         )}
       </div>
     </div>

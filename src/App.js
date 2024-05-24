@@ -35,6 +35,7 @@ export default function App() {
           setSelectedMovie={setSelectedMovie}
           showRatedMovies={showRatedMovies}
           ratedMovies={ratedMovies}
+          setRatedMovies={setRatedMovies}
         />
       )}
     </div>

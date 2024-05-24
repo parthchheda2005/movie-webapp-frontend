@@ -258,7 +258,7 @@ function RatingSystem({
       <h1>
         {ratedMovies.find((curr) => curr?.id === movieToBeAdded.id) ? (
           <span>
-            You have previously rated this{" "}
+            You have rated this movie{" "}
             {ratedMovies.find((curr) => curr?.id === movieToBeAdded.id)?.rating}
             🌟
           </span>
@@ -278,6 +278,18 @@ function RatingSystem({
       <button className="rating-button" onClick={() => handleRatedMovies()}>
         Rate the movie!
       </button>
+      {ratedMovies.find((curr) => curr.id === movieToBeAdded.id) && (
+        <button
+          className="rating-button"
+          onClick={() =>
+            setRatedMovies((currList) =>
+              currList.filter((curr) => curr.id !== movieToBeAdded.id)
+            )
+          }
+        >
+          Remove Rating
+        </button>
+      )}
     </div>
   );
 }
