@@ -2,16 +2,22 @@ import "./App.css";
 import MovieList from "./components/MovieList.js";
 import Navbar from "./components/Navbar.js";
 import MovieDetails from "./components/MovieDetails.js";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function App() {
   const [query, setQuery] = useState("");
   const [selectedMovie, setSelectedMovie] = useState(false);
-  const [ratedMovies, setRatedMovies] = useState([]);
+  const [ratedMovies, setRatedMovies] = useState(function () {
+    const storedValue = localStorage.getItem("ratedMovies");
+    return storedValue ? JSON.parse(storedValue) : [];
+  });
   const [showRatedMovies, setShowRatedMovies] = useState(false);
 
+  useEffect(() => {
+    localStorage.setItem("ratedMovies", JSON.stringify(ratedMovies));
+  }, [ratedMovies]);
+
   function handleQuery(q) {
-    ratedMovies.map((i) => console.log(i));
     setQuery(q);
   }
 
