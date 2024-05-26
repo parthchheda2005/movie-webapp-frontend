@@ -73,19 +73,33 @@ export default function MovieList({
 
   return (
     <div className="movie-list">
-      <ul>
-        {movieList?.map((movie) => (
-          <li key={movie.id}>
-            <MovieCard
-              id={movie.id}
-              key={movie.id}
-              setSelectedMovie={setSelectedMovie}
-              ratedMovies={ratedMovies}
-              setRatedMovies={setRatedMovies}
-            />
-          </li>
-        ))}
-      </ul>
+      {movieList.length > 0 ? (
+        <ul>
+          {movieList?.map((movie) => (
+            <li key={movie.id}>
+              <MovieCard
+                id={movie.id}
+                key={movie.id}
+                setSelectedMovie={setSelectedMovie}
+                ratedMovies={ratedMovies}
+                setRatedMovies={setRatedMovies}
+              />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <h1
+          style={{
+            fontSize: "100px",
+            display: "flex",
+            justifyContent: "center",
+            alignContent: "center",
+            padding: "70px",
+          }}
+        >
+          ❌ NO MOVIES FOUND ❌
+        </h1>
+      )}
     </div>
   );
 }
