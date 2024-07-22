@@ -20,10 +20,14 @@ export default function Navbar({
         tempQuery={tempQuery}
         setTempQuery={setTempQuery}
         setSelectedMovie={setSelectedMovie}
+        setShowRatedMovies={setShowRatedMovies}
       />
       <button
         className="rated-movies-btn"
-        onClick={() => setShowRatedMovies((curr) => !curr)}
+        onClick={() => {
+          setShowRatedMovies((curr) => !curr);
+          setTempQuery("");
+        }}
       >
         {" "}
         My Rated Movies{" "}
@@ -57,10 +61,12 @@ function SearchBar({
   tempQuery,
   setTempQuery,
   setSelectedMovie,
+  setShowRatedMovies,
 }) {
   function handleSubmit(e) {
     e.preventDefault();
     setSelectedMovie(false);
+    setShowRatedMovies(false);
     onHandleQuery(tempQuery);
   }
 

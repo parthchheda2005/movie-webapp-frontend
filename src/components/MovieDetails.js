@@ -9,7 +9,7 @@ export default function MovieDetails({
 }) {
   const [movie, setMovie] = useState({});
   const [rating, setRating] = useState(0);
-  let movieToBeAdded = { id: selectedMovie, rating: rating };
+  let movieToBeAdded = { movieId: selectedMovie, rating: rating };
 
   useEffect(() => {
     const controller = new AbortController();
@@ -234,32 +234,111 @@ function RatingSystem({
   setRatedMovies,
   ratedMovies,
 }) {
-  function handleRatedMovies() {
-    if (
-      ratedMovies.filter((curr) => curr.id === movieToBeAdded.id).length !== 0
-    ) {
+  async function handleRatedMovies() {
+    const movieExists = ratedMovies.some(
+      (curr) => curr.movieId * 1 === movieToBeAdded.movieId * 1
+    );
+
+    if (movieExists) {
+      console.log("Movie exists, editing movie:", movieToBeAdded);
+      await editMovie(movieToBeAdded);
       setRatedMovies((ratedMovies) =>
         ratedMovies.map((curr) => helperHandleRatedMovies(curr))
       );
     } else {
+      console.log("Movie does not exist, adding movie:", movieToBeAdded);
+      await addMovie(movieToBeAdded);
       setRatedMovies((curr) => [...curr, movieToBeAdded]);
     }
   }
 
+  async function addMovie(movie) {
+    try {
+      const response = await fetch(
+        "https://movie-webapp-backend.onrender.com/movies/v1/add-movie",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(movie),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to add movie");
+      }
+
+      const data = await response.json();
+      console.log("Movie added successfully:", data);
+    } catch (error) {
+      console.error("Error adding movie:", error);
+    }
+  }
+
+  async function editMovie(movie) {
+    try {
+      const response = await fetch(
+        `https://movie-webapp-backend.onrender.com/movies/v1/edit-movie/${movie.movieId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(movie),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to edit movie");
+      }
+
+      const data = await response.json();
+      console.log("Movie edited successfully:", data);
+    } catch (error) {
+      console.error("Error editing movie:", error);
+    }
+  }
+
   function helperHandleRatedMovies(curr) {
-    if (curr.id === movieToBeAdded.id) {
+    if (curr.movieId * 1 === movieToBeAdded.movieId * 1) {
       return { ...curr, rating: movieToBeAdded.rating };
     }
     return curr;
   }
 
+  const removeMovie = async (movieId) => {
+    try {
+      const response = await fetch(
+        `https://movie-webapp-backend.onrender.com/movies/v1/delete-movie/${movieId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to delete movie");
+      }
+      setRatedMovies((currList) =>
+        currList.filter((curr) => curr.movieId * 1 !== movieId)
+      );
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <div className="rating-system">
       <h1>
-        {ratedMovies.find((curr) => curr?.id === movieToBeAdded.id) ? (
+        {ratedMovies.find(
+          (curr) => curr?.movieId * 1 === movieToBeAdded.movieId * 1
+        ) ? (
           <span>
             You have rated this movie{" "}
-            {ratedMovies.find((curr) => curr?.id === movieToBeAdded.id)?.rating}
+            {
+              ratedMovies.find(
+                (curr) => curr?.movieId * 1 === movieToBeAdded.movieId * 1
+              )?.rating
+            }
             🌟
           </span>
         ) : (
@@ -278,14 +357,12 @@ function RatingSystem({
       <button className="rating-button" onClick={() => handleRatedMovies()}>
         Rate the movie!
       </button>
-      {ratedMovies.find((curr) => curr.id === movieToBeAdded.id) && (
+      {ratedMovies.find(
+        (curr) => curr.movieId * 1 === movieToBeAdded.movieId * 1
+      ) && (
         <button
           className="rating-button"
-          onClick={() =>
-            setRatedMovies((currList) =>
-              currList.filter((curr) => curr.id !== movieToBeAdded.id)
-            )
-          }
+          onClick={() => removeMovie(movieToBeAdded.movieId)}
         >
           Remove Rating
         </button>

@@ -7,15 +7,24 @@ import { useState, useEffect } from "react";
 export default function App() {
   const [query, setQuery] = useState("");
   const [selectedMovie, setSelectedMovie] = useState(false);
-  const [ratedMovies, setRatedMovies] = useState(function () {
-    const storedValue = localStorage.getItem("ratedMovies");
-    return storedValue ? JSON.parse(storedValue) : [];
-  });
+  const [ratedMovies, setRatedMovies] = useState([]);
   const [showRatedMovies, setShowRatedMovies] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("ratedMovies", JSON.stringify(ratedMovies));
-  }, [ratedMovies]);
+    const getRatedMovies = async () => {
+      try {
+        const res = await fetch(
+          "https://movie-webapp-backend.onrender.com/movies/v1/get-movies"
+        );
+        const data = await res.json();
+        setRatedMovies(data.data.movies);
+        console.log(data.data.movies);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    getRatedMovies();
+  }, []);
 
   function handleQuery(q) {
     setQuery(q);

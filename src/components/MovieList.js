@@ -8,11 +8,13 @@ export default function MovieList({
   setRatedMovies,
 }) {
   const [movieList, setMovieList] = useState(ratedMovies);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
 
     async function getMovies() {
+      setIsLoading(true);
       try {
         const options = {
           method: "GET",
@@ -55,17 +57,18 @@ export default function MovieList({
             { signal: controller.signal }
           );
           const data = await res.json();
-          setMovieList(data.results);
+          setMovieList([...new Set(data.results)]);
         }
       } catch (e) {
         console.error(e);
       }
+      setIsLoading(false);
     }
 
     if (!showRatedMovies) {
       getMovies();
     } else {
-      setMovieList(ratedMovies);
+      setMovieList([...new Set(ratedMovies)]);
     }
 
     return () => controller.abort();
@@ -73,19 +76,20 @@ export default function MovieList({
 
   return (
     <div className="movie-list">
-      {movieList.length > 0 ? (
+      {!isLoading ? (
         <ul>
-          {movieList?.map((movie) => (
-            <li key={movie.id}>
-              <MovieCard
-                id={movie.id}
-                key={movie.id}
-                setSelectedMovie={setSelectedMovie}
-                ratedMovies={ratedMovies}
-                setRatedMovies={setRatedMovies}
-              />
-            </li>
-          ))}
+          {movieList.map((movie) => {
+            return (
+              <li key={movie.movieId || movie.id}>
+                <MovieCard
+                  id={movie.movieId || movie.id}
+                  setSelectedMovie={setSelectedMovie}
+                  ratedMovies={ratedMovies}
+                  setRatedMovies={setRatedMovies}
+                />
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <h1
@@ -126,7 +130,9 @@ function MovieCard({ id, setSelectedMovie, ratedMovies, setRatedMovies }) {
         { signal: controller.signal }
       )
         .then((response) => response.json())
-        .then((response) => setMovie(response))
+        .then((response) => {
+          setMovie(response);
+        })
         .catch((err) => console.error(err));
     }
 
@@ -135,6 +141,25 @@ function MovieCard({ id, setSelectedMovie, ratedMovies, setRatedMovies }) {
     return () => controller.abort();
   }, [id]);
 
+  const removeMovie = async (movieId) => {
+    try {
+      const response = await fetch(
+        `https://movie-webapp-backend.onrender.com/movies/v1/delete-movie/${movieId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to delete movie");
+      }
+      setRatedMovies((currList) =>
+        currList.filter((curr) => curr.movieId * 1 !== movieId * 1)
+      );
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <div className="card">
       <img
@@ -142,7 +167,7 @@ function MovieCard({ id, setSelectedMovie, ratedMovies, setRatedMovies }) {
         src={
           movie.poster_path
             ? `https://image.tmdb.org/t/p/w300_and_h450_bestv2${movie?.poster_path}`
-            : "https://m.media-amazon.com/images/I/71K9jxwdFeL._AC_UF894,1000_QL80_.jpg"
+            : "https://viterbi-web.usc.edu/~zexunyao/itp301/Assignment_07/img.jpeg"
         }
         alt={movie.original_title}
       />
@@ -163,26 +188,19 @@ function MovieCard({ id, setSelectedMovie, ratedMovies, setRatedMovies }) {
         <button className="card-btn" onClick={() => setSelectedMovie(id)}>
           See Details
         </button>
-        {ratedMovies.find((curr) => curr.id === id) && (
-          <p className="card-info">
-            {" "}
-            You rated this {
-              ratedMovies.find((curr) => curr.id === id).rating
-            }{" "}
-            ⭐️
-          </p>
-        )}
-        {ratedMovies.find((curr) => curr.id === id) && (
-          <button
-            className="card-btn"
-            onClick={() =>
-              setRatedMovies((currList) =>
-                currList.filter((curr) => curr.id !== id)
-              )
-            }
-          >
-            Remove Rating
-          </button>
+        {ratedMovies.find((curr) => curr.movieId * 1 === id * 1) && (
+          <>
+            <p className="card-info">
+              <strong>
+                You rated this{" "}
+                {ratedMovies.find((curr) => curr.movieId * 1 === id * 1).rating}{" "}
+                ⭐️
+              </strong>
+            </p>
+            <button className="card-btn" onClick={() => removeMovie(id)}>
+              Remove Rating
+            </button>
+          </>
         )}
       </div>
     </div>
