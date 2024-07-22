@@ -2,6 +2,7 @@ import "./App.css";
 import MovieList from "./components/MovieList.js";
 import Navbar from "./components/Navbar.js";
 import MovieDetails from "./components/MovieDetails.js";
+import Spinner from "./components/Spinner.js";
 import { useState, useEffect } from "react";
 
 export default function App() {
@@ -9,9 +10,11 @@ export default function App() {
   const [selectedMovie, setSelectedMovie] = useState(false);
   const [ratedMovies, setRatedMovies] = useState([]);
   const [showRatedMovies, setShowRatedMovies] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getRatedMovies = async () => {
+      setIsLoading(true);
       try {
         const res = await fetch(
           "https://movie-webapp-backend.onrender.com/movies/v1/get-movies"
@@ -22,6 +25,7 @@ export default function App() {
       } catch (e) {
         console.error(e);
       }
+      setIsLoading(false);
     };
     getRatedMovies();
   }, []);
@@ -37,7 +41,9 @@ export default function App() {
         setSelectedMovie={setSelectedMovie}
         setShowRatedMovies={setShowRatedMovies}
       />
-      {selectedMovie ? (
+      {isLoading ? (
+        <Spinner />
+      ) : selectedMovie ? (
         <MovieDetails
           selectedMovie={selectedMovie}
           setSelectedMovie={setSelectedMovie}
