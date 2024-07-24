@@ -42,7 +42,9 @@ export default function App() {
         setShowRatedMovies={setShowRatedMovies}
       />
       {isLoading ? (
+        <div className="center-spinner">
         <Spinner />
+        </div>
       ) : selectedMovie ? (
         <MovieDetails
           selectedMovie={selectedMovie}
