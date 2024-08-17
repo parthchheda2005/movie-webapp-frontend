@@ -12,6 +12,8 @@ export default function App() {
   const [showRatedMovies, setShowRatedMovies] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log(process.env.API_KEY);
+
   useEffect(() => {
     const getRatedMovies = async () => {
       setIsLoading(true);
@@ -43,7 +45,7 @@ export default function App() {
       />
       {isLoading ? (
         <div className="center-spinner">
-        <Spinner />
+          <Spinner />
         </div>
       ) : selectedMovie ? (
         <MovieDetails
