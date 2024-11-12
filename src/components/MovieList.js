@@ -27,21 +27,21 @@ export default function MovieList({
 
         if (!query) {
           const res = await fetch(
-            "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
+            "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1",
             options,
             { signal: controller.signal }
           );
           const data = await res.json();
 
           const res2 = await fetch(
-            "https://api.themoviedb.org/3/movie/popular?language=en-US&page=2",
+            "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=2",
             options,
             { signal: controller.signal }
           );
           const data2 = await res2.json();
 
           const res3 = await fetch(
-            "https://api.themoviedb.org/3/movie/popular?language=en-US&page=3",
+            "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=3",
             options,
             { signal: controller.signal }
           );
