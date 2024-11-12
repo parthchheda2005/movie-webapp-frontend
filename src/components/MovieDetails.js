@@ -19,7 +19,8 @@ export default function MovieDetails({
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization: "Bearer " + process.env.API_KEY,
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkYjI2Mjc4NTExMzM1YTE3Yjg4NzQxZjRlNTljYjU1NSIsIm5iZiI6MTczMTM5MjkxNC44MDY2NjE0LCJzdWIiOiI2NjRhZjQ1NmVmY2IyNzY3YjA3OThlYzQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.e0PgRq1uopfdWQk4ZUMbgzrDbe_QaSyHI2OpeeANh7E",
         },
       };
 
@@ -68,7 +69,8 @@ function Content({ movie, setSelectedMovie, selectedMovie }) {
       method: "GET",
       headers: {
         accept: "application/json",
-        Authorization: "Bearer " + process.env.API_KEY,
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkYjI2Mjc4NTExMzM1YTE3Yjg4NzQxZjRlNTljYjU1NSIsIm5iZiI6MTczMTM5MjkxNC44MDY2NjE0LCJzdWIiOiI2NjRhZjQ1NmVmY2IyNzY3YjA3OThlYzQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.e0PgRq1uopfdWQk4ZUMbgzrDbe_QaSyHI2OpeeANh7E",
       },
     };
     function getAvailability() {
@@ -93,7 +95,8 @@ function Content({ movie, setSelectedMovie, selectedMovie }) {
       method: "GET",
       headers: {
         accept: "application/json",
-        Authorization: "Bearer " + process.env.API_KEY,
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkYjI2Mjc4NTExMzM1YTE3Yjg4NzQxZjRlNTljYjU1NSIsIm5iZiI6MTczMTM5MjkxNC44MDY2NjE0LCJzdWIiOiI2NjRhZjQ1NmVmY2IyNzY3YjA3OThlYzQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.e0PgRq1uopfdWQk4ZUMbgzrDbe_QaSyHI2OpeeANh7E",
       },
     };
     function getDirector() {
@@ -120,7 +123,8 @@ function Content({ movie, setSelectedMovie, selectedMovie }) {
       method: "GET",
       headers: {
         accept: "application/json",
-        Authorization: "Bearer " + process.env.API_KEY,
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkYjI2Mjc4NTExMzM1YTE3Yjg4NzQxZjRlNTljYjU1NSIsIm5iZiI6MTczMTM5MjkxNC44MDY2NjE0LCJzdWIiOiI2NjRhZjQ1NmVmY2IyNzY3YjA3OThlYzQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.e0PgRq1uopfdWQk4ZUMbgzrDbe_QaSyHI2OpeeANh7E",
       },
     };
     function getActors() {
