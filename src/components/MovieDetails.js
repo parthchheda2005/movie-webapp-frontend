@@ -80,7 +80,9 @@ function Content({ movie, setSelectedMovie, selectedMovie }) {
         { signal: controller.signal }
       )
         .then((response) => response.json())
-        .then((response) => setAvailability(response.results?.SG?.buy))
+        .then((response) => {
+          setAvailability(response.results?.SG?.buy);
+        })
         .catch((err) => console.error(err));
     }
 
