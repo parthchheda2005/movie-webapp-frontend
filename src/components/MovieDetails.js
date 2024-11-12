@@ -19,10 +19,7 @@ export default function MovieDetails({
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization:
-            "Bearer " + process.env.API_KEY
-              ? process.env.API_KEY
-              : "db26278511335a17b88741f4e59cb555",
+          Authorization: "Bearer " + process.env.API_KEY,
         },
       };
 
@@ -71,10 +68,7 @@ function Content({ movie, setSelectedMovie, selectedMovie }) {
       method: "GET",
       headers: {
         accept: "application/json",
-        Authorization:
-          "Bearer " + process.env.API_KEY
-            ? process.env.API_KEY
-            : "db26278511335a17b88741f4e59cb555",
+        Authorization: "Bearer " + process.env.API_KEY,
       },
     };
     function getAvailability() {
@@ -99,10 +93,7 @@ function Content({ movie, setSelectedMovie, selectedMovie }) {
       method: "GET",
       headers: {
         accept: "application/json",
-        Authorization:
-          "Bearer " + process.env.API_KEY
-            ? process.env.API_KEY
-            : "db26278511335a17b88741f4e59cb555",
+        Authorization: "Bearer " + process.env.API_KEY,
       },
     };
     function getDirector() {
@@ -129,10 +120,7 @@ function Content({ movie, setSelectedMovie, selectedMovie }) {
       method: "GET",
       headers: {
         accept: "application/json",
-        Authorization:
-          "Bearer " + process.env.API_KEY
-            ? process.env.API_KEY
-            : "db26278511335a17b88741f4e59cb555",
+        Authorization: "Bearer " + process.env.API_KEY,
       },
     };
     function getActors() {
