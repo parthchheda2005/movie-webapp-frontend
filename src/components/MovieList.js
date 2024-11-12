@@ -20,7 +20,10 @@ export default function MovieList({
           method: "GET",
           headers: {
             accept: "application/json",
-            Authorization: "Bearer " + process.env.API_KEY,
+            Authorization:
+              "Bearer " + process.env.API_KEY
+                ? process.env.API_KEY
+                : "db26278511335a17b88741f4e59cb555",
           },
         };
 
@@ -118,7 +121,10 @@ function MovieCard({ id, setSelectedMovie, ratedMovies, setRatedMovies }) {
         method: "GET",
         headers: {
           accept: "application/json",
-          Authorization: "Bearer " + process.env.API_KEY,
+          Authorization:
+            "Bearer " + process.env.API_KEY
+              ? process.env.API_KEY
+              : "db26278511335a17b88741f4e59cb555",
         },
       };
 
